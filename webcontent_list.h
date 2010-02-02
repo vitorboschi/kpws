@@ -11,7 +11,7 @@ class WebContent_List : public WebContent
 {
 	public:
 	WebContent_List(QString identifier = "");
-	int getChunk(QString url, char* buffer, quint64 start=0, int len=-1);
+	int getChunk(QString url, QByteArray* buffer, qint64 start=0, int len=-1);
 	QString getMime(QString url);
 	qint64 getSize(QString url);
 	bool validUrl(QString url);

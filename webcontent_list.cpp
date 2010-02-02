@@ -69,25 +69,19 @@ qint64 WebContent_List::getSize(QString url) {
 	}
 }
 
-int WebContent_List::getChunk(QString url, char* buffer, quint64 start, int len)
+int WebContent_List::getChunk(QString url, QByteArray* buffer, qint64 start, int len)
 {
 	QString id;
 	QString address;
 
 	id = url.section("/", 0, 0);
 	address = url.section("/", 1);
-	
-	qDebug() << identifier << ": fetching data from url " << url;
 
 	if (url == "") { //the resource is this list itself
-		
+		buffer->clear();
 		if (start <= content.length()) {
-			size_t real_len = content.length() - start;
-			if (len < real_len) {
-			  real_len = len;
-			}
-			memcpy(buffer, content.mid(start,real_len).constData(), real_len);
-			return real_len; //OK
+			buffer->append(content.mid(start, len));
+			return content.mid(start, len).size(); //OK
 		}
 		return -1;
 	}
@@ -105,16 +99,8 @@ bool WebContent_List::validUrl(QString url) {
 
 	id = url.section("/", 0, 0);
 	address = url.section("/", 1);
-	
-	qDebug("ID: ");
-	qDebug() << id;
-	//qDebug(id.data()->);
-	
-	qDebug("address: ");
-	qDebug() << address;
-	//qDebug(address);
-	
-	if (id.isEmpty()) { //the resource is this list itself
+
+	if (url == "") { //the resource is this list itself
 		return true;
 	}
 	else if (resources.contains(id)) {

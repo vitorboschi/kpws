@@ -25,28 +25,26 @@ WebContent_File::WebContent_File(QString identifier, QString file) : WebContent(
 	}
 }
 
-int WebContent_File::getChunk(QString url, char* buffer, quint64 start, int len)
+int WebContent_File::getChunk(QString url, QByteArray* buffer, qint64 start, int len)
 {
+  //FIXME: This is very very inefficient
 	if (url == "") {
-		//buffer->clear();
+		buffer->clear();
 		QFile f(this->tmpFile);
 		f.open(QIODevice::ReadOnly);
 		QByteArray tempBuffer;
 		
 		if (f.seek(start)) {
-			/*
 			if (len >= 0 && f.bytesAvailable() >= len) {
 				tempBuffer = f.peek(len);
-				f.peek()
 			}
 			else {
 				tempBuffer = f.peek(f.bytesAvailable());
 			}
-			*/
-			qint64 real_len;
-			real_len = f.peek(buffer,len);
+
 			f.close();
-			return real_len;
+			buffer->append(tempBuffer);
+			return tempBuffer.size();
 		}
 		else {
 			qDebug() << "ERROR: Tried to read past the end of file";
@@ -79,7 +77,7 @@ qint64 WebContent_File::getSize(QString url) {
 		return content.length();
 	}
 	*/
-	return -1;
+	return 0;
 }
 
 bool WebContent_File::validUrl(QString url) {

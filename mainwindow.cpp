@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 	c3 = new WebContent_Dummy("arq3");
 	f1 = new WebContent_List("folder1");
 
-	fileOk = new WebContent_File("fileOK", "/home/vitor/Desktop/trance.pls");
+	fileOk = new WebContent_File("fileOK", "/home/vitor/sancalivre.iso");
 	fileError = new WebContent_File("fileError", "/home/vitor/nonExistent");
 
 	daemon.setRootContent(root);
@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 	root->updateCache();
 	f1->updateCache();
 
-	if (daemon.startServer(/*QHostAddress::Any, 8080*/)) {
+	if (daemon.listen(QHostAddress::Any, 8080)) {
 		logList->addItem(i18n("Daemon started"));
 	}
 }

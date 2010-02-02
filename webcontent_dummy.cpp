@@ -11,18 +11,13 @@ WebContent_Dummy::WebContent_Dummy(QString identifier) : WebContent(identifier) 
 
 }
 
-int WebContent_Dummy::getChunk(QString url, char* buffer, quint64 start, int len)
+int WebContent_Dummy::getChunk(QString url, QByteArray* buffer, qint64 start, int len)
 {
-	
 	if (url == "") {
+		buffer->clear();
 		if (start <= content.length()) {
-			size_t real_len = content.size() - start; //remaining bytes
-			if (len < real_len) {
-			  real_len = len; //copy only the amount requested
-			}
-			  
-			memcpy(buffer,content.mid(start, len).constData(),real_len);
-			return real_len; //O
+			buffer->append(content.mid(start, len));
+			return content.mid(start, len).size(); //OK
 		}
 		else {
 			return -1; //invalid parameters

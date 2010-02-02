@@ -8,9 +8,11 @@ class WebContent
 {
 	public:
 	WebContent(QString identifier= "");
-	virtual int getChunk(QString url, char* buffer, quint64 start=0, int len=-1) = 0;
+	//Return the number of bytes written to the buffer
+	virtual int getChunk(QString url, QByteArray* buffer, qint64 start=0, int len=-1) = 0;
 	virtual QString getMime(QString url) {return "";};
-	virtual qint64 getSize(QString url) {return -1;};
+	//Content size, in bytes, or -1 when unknown
+	virtual qint64 getSize(QString url) {return 0;};
 	virtual bool validUrl(QString url) {return false;};
 	QString getUrl();
 	int getChildCount() {return 0;};
