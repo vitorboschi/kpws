@@ -36,12 +36,21 @@ class Worker : public QObject
     void finished();
 
   private:
+    typedef enum {
+      KPWS_STATE_IDLE,
+      KPWS_STATE_REPLYING,
+      KPWS_STATE_ERROR
+    } KPWS_State;
+    
+    void replyError(int code, QString description);
+    
     QTcpSocket* m_socket;
     WebContent* m_rootContent;
     quint64 m_position; //where the next block of data begins
     bool m_handled;
     QByteArray* m_buffer;
     QString m_url;
+    KPWS_State m_state;
     
   private slots:
     void slotReadReady();

@@ -21,6 +21,7 @@
 
 Worker::Worker ( int socketDescriptor, WebContent* content, QObject* parent ) : QObject (parent)
 {
+  m_state = KPWS_STATE_IDLE;
   m_handled = false;
   m_position = 0;
   m_rootContent = content;
@@ -41,9 +42,14 @@ Worker::~Worker()
 
 void Worker::slotBytesWritten ( qint64 bytes )
 {
-//TODO: Send another package to the client, or finish the connection and emit the signal "finished"
   //qDebug() << "Bytes Written: " << bytes << ". Current position: " << m_position;
   qint64 bytesRead;
+  
+  if (m_state == KPWS_STATE_ERROR) { //we got an invalid request
+    m_socket->close();
+    //emit error signal;
+    return;
+  }
   
   bytesRead = m_rootContent->getChunk(m_url, m_buffer, m_position, m_buffer->size());
   
@@ -51,12 +57,14 @@ void Worker::slotBytesWritten ( qint64 bytes )
     //end of data
     qDebug() << "End of data";
     m_socket->close();
+    emit finished();
     return;
   }
   
   if (bytesRead < 0) {
     qDebug() << "Something bad happened";
     m_socket->close();
+    //TODO: Emit error signal
     return;
   }
   
@@ -77,6 +85,7 @@ void Worker::slotReadReady() {
   QString httpRequest(m_socket->readLine());
   if (httpRequest.section(" ", 0,0) != "GET") {
     //TODO: Send error response
+    replyError(400, "Error");
     qDebug() << "Invalid request";
     return;
   }
@@ -90,6 +99,7 @@ void Worker::slotReadReady() {
   //check if the resource really exist in this server
   if (!m_rootContent->validUrl(m_url)) {
     //TODO: send error 404: Not Found
+    replyError(404, "Not Found");
     qDebug() << "Invalid URL";
     return;
   }
@@ -111,9 +121,21 @@ void Worker::slotReadReady() {
   header.flush();
   
   //Send it
+  m_state = KPWS_STATE_REPLYING;
   m_socket->write(headerBlock);
   
   //the response body will be written by slotBytesWritten
+}
+
+void Worker::replyError(int code, QString description)
+{
+  m_state = KPWS_STATE_ERROR;
+  QByteArray headerBlock;
+  QTextStream header(&headerBlock, QIODevice::WriteOnly);
+  header << "HTTP/1.1 " << code << " " << description << "\r\n";
+  header << "Connection: close\r\n";
+  header.flush();
+  m_socket->write(headerBlock);
 }
 
 void Worker::slotError(QTcpSocket::SocketError socketError) {
