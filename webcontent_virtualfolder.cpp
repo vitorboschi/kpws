@@ -19,12 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QTextStream>
 #include <QtDebug>
-#include "webcontent_list.h"
+#include "webcontent_virtualfolder.h"
 
-WebContent_List::WebContent_List(QString identifier) : WebContent(identifier) {
+WebContent_VirtualFolder::WebContent_List(QString identifier) : WebContent(identifier) {
 }
 
-bool WebContent_List::addContent(WebContent* content) {
+bool WebContent_VirtualFolder::addContent(WebContent* content) {
 	resources[content->getIdentifier()] = content;
 	content->setParent(this);
 
@@ -32,7 +32,7 @@ bool WebContent_List::addContent(WebContent* content) {
 	return true;
 }
 
-WebContent* WebContent_List::getContent(QString identifier) {
+WebContent* WebContent_VirtualFolder::getContent(QString identifier) {
 	if (resources.contains(identifier)) {
 		return resources[identifier];
 	}
@@ -41,7 +41,7 @@ WebContent* WebContent_List::getContent(QString identifier) {
 	}
 }
 
-WebContent* WebContent_List::removeContent(QString identifier) {
+WebContent* WebContent_VirtualFolder::removeContent(QString identifier) {
 	if (resources.contains(identifier)) {
 		WebContent* buffer = resources[identifier];
 		resources.remove(identifier);
@@ -52,7 +52,7 @@ WebContent* WebContent_List::removeContent(QString identifier) {
 	}
 }
 
-QString WebContent_List::getMime(QString url) {
+QString WebContent_VirtualFolder::getMime(QString url) {
 	QString id;
 	QString address;
 
@@ -70,7 +70,7 @@ QString WebContent_List::getMime(QString url) {
 	}
 }
 
-qint64 WebContent_List::getSize(QString url) {
+qint64 WebContent_VirtualFolder::getSize(QString url) {
 	QString id;
 	QString address;
 
@@ -88,7 +88,7 @@ qint64 WebContent_List::getSize(QString url) {
 	}
 }
 
-int WebContent_List::getChunk(QString url, QByteArray* buffer, qint64 start, int len)
+int WebContent_VirtualFolder::getChunk(QString url, QByteArray* buffer, qint64 start, int len)
 {
 	QString id;
 	QString address;
@@ -112,7 +112,7 @@ int WebContent_List::getChunk(QString url, QByteArray* buffer, qint64 start, int
 	}
 }
 
-bool WebContent_List::validUrl(QString url) {
+bool WebContent_VirtualFolder::validUrl(QString url) {
 	QString id;
 	QString address;
 
@@ -130,7 +130,7 @@ bool WebContent_List::validUrl(QString url) {
 	}
 }
 
-void WebContent_List::updateCache() {
+void WebContent_VirtualFolder::updateCache() {
 	content.clear();
 	
 	QTextStream stream(&content);

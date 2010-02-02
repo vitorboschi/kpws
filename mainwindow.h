@@ -45,12 +45,12 @@ class MainWindow : public KXmlGuiWindow
 		WebServer daemon;
 
 		//test content
-		WebContent_List* root;
+		WebContent_VirtualFolder* root;
 		
 		WebContent_Dummy* c1;
 		WebContent_Dummy* c2;
 
-		WebContent_List* f1;
+		WebContent_VirtualFolder* f1;
 		WebContent_Dummy* c3;
 
 		WebContent_File* fileOk;

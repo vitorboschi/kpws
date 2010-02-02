@@ -17,8 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-#ifndef WEBCONTENT_LIST_H
-#define WEBCONTENT_LIST_H
+#ifndef WEBCONTENT_VIRTUALFOLDER_H
+#define WEBCONTENT_VIRTUALFOLDER_H
 
 #include <QString>
 #include <QByteArray>
@@ -26,10 +26,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "webcontent.h"
 
 
-class WebContent_List : public WebContent
+class WebContent_VirtualFolder : public WebContent
 {
 	public:
-	WebContent_List(QString identifier = "");
+	WebContent_VirtualFolder(QString identifier = "");
 	int getChunk(QString url, QByteArray* buffer, qint64 start=0, int len=-1);
 	QString getMime(QString url);
 	qint64 getSize(QString url);
