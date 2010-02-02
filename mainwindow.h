@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "webserver.h"
 #include "webcontent_dummy.h"
-#include "webcontent_list.h"
+#include "webcontent_virtualfolder.h"
 #include "webcontent_file.h"
 
 class MainWindow : public KXmlGuiWindow

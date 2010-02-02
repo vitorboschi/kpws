@@ -32,11 +32,11 @@ MainWindow::MainWindow(QWidget *parent) : KXmlGuiWindow(parent)
 	logList->addItem(i18n("Application started"));
 	
 	//add some test content
-	root = new WebContent_List();
+	root = new WebContent_VirtualFolder();
 	c1 = new WebContent_Dummy("arq1");
 	c2 = new WebContent_Dummy("arq2");
 	c3 = new WebContent_Dummy("arq3");
-	f1 = new WebContent_List("folder1");
+	f1 = new WebContent_VirtualFolder("folder1");
 
 	fileOk = new WebContent_File("fileOK", "/home/vitor/sancalivre.iso");
 	fileError = new WebContent_File("fileError", "/home/vitor/nonExistent");

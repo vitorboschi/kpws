@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtDebug>
 #include "webcontent_virtualfolder.h"
 
-WebContent_VirtualFolder::WebContent_List(QString identifier) : WebContent(identifier) {
+WebContent_VirtualFolder::WebContent_VirtualFolder(QString identifier) : WebContent(identifier) {
 }
 
 bool WebContent_VirtualFolder::addContent(WebContent* content) {

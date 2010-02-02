@@ -8,7 +8,7 @@ set(kpws_SRCS
 	webserver.cpp
 	webcontent.cpp
 	webcontent_dummy.cpp
-	webcontent_list.cpp
+	webcontent_virtualfolder.cpp
 	webcontent_file.cpp
 	worker.cpp)
 kde4_add_executable(kpws ${kpws_SRCS})
